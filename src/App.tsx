@@ -17,7 +17,7 @@ import {
     changeTodolistTitleAC, getTodosTC,
     FilterValuesType,
     removeTodolistAC,
-    TodolistDomainType, removeTodoTC
+    TodolistDomainType, removeTodoTC, addTodoTC
 } from './state/todolists-reducer'
 import {
     addTaskAC,
@@ -79,8 +79,9 @@ function App() {
     }, []);
 
     const addTodolist = useCallback((title: string) => {
-        const action = addTodolistAC(title);
-        dispatch(action);
+        // const action = addTodolistAC(title);
+        // dispatch(action);
+        dispatch(addTodoTC(title))
     }, [dispatch]);
 
     return (
