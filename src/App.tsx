@@ -14,15 +14,16 @@ import { Menu } from '@mui/icons-material';
 import {
     addTodolistAC,
     changeTodolistFilterAC,
-    changeTodolistTitleAC,
+    changeTodolistTitleAC, fetchTodolistsThunk,
     FilterValuesType,
-    removeTodolistAC, setTodolistsAC,
+    removeTodolistAC,
     TodolistDomainType
 } from './state/todolists-reducer'
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from './state/tasks-reducer';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppRootStateType } from './state/store';
-import {TaskStatuses, TaskType, todolistsAPI} from './api/todolists-api'
+import {AppRootStateType, ThunkType} from './state/store';
+import {TaskStatuses, TaskType,} from './api/todolists-api'
+
 
 
 export type TasksStateType = {
@@ -32,13 +33,15 @@ export type TasksStateType = {
 
 function App() {
 
-    useEffect(() => {
-        todolistsAPI.getTodolists().then((res) => dispatch(setTodolistsAC(res.data)))
-    }, [])
+
 
     const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<ThunkType>();
+
+    useEffect(() => {
+        dispatch(fetchTodolistsThunk)
+    }, [])
 
     const removeTask = useCallback(function (id: string, todolistId: string) {
         const action = removeTaskAC(id, todolistId);
