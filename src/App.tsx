@@ -79,8 +79,6 @@ function App() {
     }, []);
 
     const addTodolist = useCallback((title: string) => {
-        // const action = addTodolistAC(title);
-        // dispatch(action);
         dispatch(addTodoTC(title))
     }, [dispatch]);
 
