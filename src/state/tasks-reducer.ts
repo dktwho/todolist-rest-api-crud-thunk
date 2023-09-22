@@ -153,7 +153,7 @@ export const changeTaskTitleAC = (taskId: string, title: string, todolistId: str
     return {type: 'CHANGE-TASK-TITLE', title, todolistId, taskId} as const
 }
 
-export const setTasksAC = (tasks: TaskType[], todolistId :string) => {
+export const setTasksAC = (tasks: TaskType[], todolistId :string)  => {
     return {
         type: 'SET-TASKS', tasks, todolistId
     } as const
@@ -170,4 +170,10 @@ export const getTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
     todolistsAPI.getTasks(todolistId).then((res) => {
         dispatch(setTasksAC(res.data.items, todolistId))
     })
+}
+
+export const addTaskTC = (todolistId: string, title: string) => (dispatch: Dispatch) => {
+     todolistsAPI.createTask(todolistId, title).then((res) => {
+         dispatch(addTaskAC(title, todolistId))
+     })
 }
