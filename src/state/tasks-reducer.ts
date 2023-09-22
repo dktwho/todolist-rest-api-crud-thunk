@@ -38,6 +38,7 @@ export type ChangeTaskTitleActionType = {
 export type SetTasksActionType = {
     type: 'SET-TASKS',
     todolistId: string
+    tasks: TaskType[]
 }
 
 type ActionsType = RemoveTaskActionType | AddTaskActionType
@@ -128,28 +129,34 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             return stateCopy;
         }
 
+        case 'SET-TASKS' : {
+            return {
+                ...state, [action.todolistId]: action.tasks
+            }
+        }
+
         default:
             return state;
     }
 }
 
 export const removeTaskAC = (taskId: string, todolistId: string): RemoveTaskActionType => {
-    return {type: 'REMOVE-TASK', taskId: taskId, todolistId: todolistId}
+    return {type: 'REMOVE-TASK', taskId: taskId, todolistId: todolistId} as const
 }
 export const addTaskAC = (title: string, todolistId: string): AddTaskActionType => {
-    return {type: 'ADD-TASK', title, todolistId}
+    return {type: 'ADD-TASK', title, todolistId} as const
 }
 export const changeTaskStatusAC = (taskId: string, status: TaskStatuses, todolistId: string): ChangeTaskStatusActionType => {
-    return {type: 'CHANGE-TASK-STATUS', status, todolistId, taskId}
+    return {type: 'CHANGE-TASK-STATUS', status, todolistId, taskId} as const
 }
 export const changeTaskTitleAC = (taskId: string, title: string, todolistId: string): ChangeTaskTitleActionType => {
-    return {type: 'CHANGE-TASK-TITLE', title, todolistId, taskId}
+    return {type: 'CHANGE-TASK-TITLE', title, todolistId, taskId} as const
 }
 
-export const setTasksAC = (tasks: TaskType[]) => {
+export const setTasksAC = (tasks: TaskType[], todolistId :string) => {
     return {
-        type: 'SET-TASKS', tasks
-    }
+        type: 'SET-TASKS', tasks, todolistId
+    } as const
 }
 
 
@@ -161,6 +168,6 @@ export const removeTaskTC = (id: string, todolistId: string) => (dispatch: Dispa
 
 export const getTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
     todolistsAPI.getTasks(todolistId).then((res) => {
-        dispatch(setTasksAC(res.data.items))
+        dispatch(setTasksAC(res.data.items, todolistId))
     })
 }
