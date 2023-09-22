@@ -89,7 +89,6 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
         }
         case 'CHANGE-TASK-TITLE': {
             let todolistTasks = state[action.todolistId];
-            // найдём нужную таску:
             let newTasksArray = todolistTasks
                 .map(t => t.id === action.taskId ? {...t, title: action.title} : t);
 
@@ -142,7 +141,6 @@ export const setTasksAC = (tasks: TaskType[], todolistId: string) => {
         type: 'SET-TASKS', tasks, todolistId
     } as const
 }
-
 
 export const removeTaskTC = (id: string, todolistId: string) => (dispatch: Dispatch) => {
     todolistsAPI.deleteTask(todolistId, id).then((res) => {
