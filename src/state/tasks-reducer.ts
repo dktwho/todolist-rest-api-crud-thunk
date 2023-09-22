@@ -146,11 +146,12 @@ export const changeTaskTitleAC = (taskId: string, title: string, todolistId: str
     return {type: 'CHANGE-TASK-TITLE', title, todolistId, taskId}
 }
 
-export const setTasksAC = (todolistId: string): SetTasksActionType => {
+export const setTasksAC = (tasks: TaskType[]) => {
     return {
-        type: 'SET-TASKS', todolistId,
+        type: 'SET-TASKS', tasks
     }
 }
+
 
 export const removeTaskTC = (id: string, todolistId: string) => (dispatch: Dispatch) => {
     todolistsAPI.deleteTask(todolistId, id).then((res) => {
@@ -158,9 +159,8 @@ export const removeTaskTC = (id: string, todolistId: string) => (dispatch: Dispa
     })
 }
 
-
 export const getTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
     todolistsAPI.getTasks(todolistId).then((res) => {
-        dispatch(setTasksAC(todolistId))
+        dispatch(setTasksAC(res.data.items))
     })
 }
